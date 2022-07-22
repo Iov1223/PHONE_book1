@@ -10,8 +10,7 @@ namespace PHONE_book1
 {
     class PhoneNumbers
     {
-        public string name = "";
-        private string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\PB.txt";
+        private string path = Directory.GetCurrentDirectory() + @"\PB.txt";
         public string phoneNuber = "";
         private StreamReader my_stream_reader = null;
         private int count_of_string = 0, count = 0;
@@ -26,10 +25,8 @@ namespace PHONE_book1
                 Arr_of_string[i] = my_stream_reader.ReadLine();
             }
         }
-        public void SearchName()
+        public void SearchName(string name)
         {
-            Console.WriteLine("Введите имя контакта:");
-            name = Console.ReadLine();
             for (int i = 0; i < count_of_string; i++)
             {
                 if (Arr_of_string[i].Contains(name))
@@ -49,7 +46,7 @@ namespace PHONE_book1
 
             }
         }
-        public void ShowNumber()
+        public void ShowNumber(string name)
         {
             if (phoneNuber != "")
             {
@@ -63,12 +60,37 @@ namespace PHONE_book1
     }
     class Program
     {
-        static void Main(string[] args)
+        public void Print(string []args)
         {
             PhoneNumbers myNumber = new PhoneNumbers();
-            myNumber.ReadFile();
-            myNumber.SearchName();
-            myNumber.ShowNumber();
+            if (args.Length != 0 && args.Length == 2)
+            {
+                myNumber.ReadFile();
+                myNumber.SearchName(args[0] + " " + args[1]);
+                myNumber.ShowNumber(args[0] + " " + args[1]);
+            }
+            else
+            {
+                if (args.Length != 0)
+                {
+                    myNumber.ReadFile();
+                    myNumber.SearchName(args[0]);
+                    myNumber.ShowNumber(args[0]);
+                }
+                else
+                {
+                    Console.WriteLine("Введите имя контакта:");
+                    string name = Console.ReadLine();
+                    myNumber.ReadFile();
+                    myNumber.SearchName(name);
+                    myNumber.ShowNumber(name);
+                }
+            }
+        }
+        static void Main(string[] args)
+        {
+            Program myProgram = new Program();
+            myProgram.Print(args);
         }
     }
 }
